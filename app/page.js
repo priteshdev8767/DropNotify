@@ -350,7 +350,7 @@ function SocialLink({ href, icon: Icon, label, color, hoverBg }) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// AUTH BUTTON
+// AUTH BUTTON — ✅ FIXED: no /login route, uses Supabase OAuth directly
 // ═══════════════════════════════════════════════════════════
 function AuthButton({ user, onSignOut }) {
   if (user) {
@@ -371,19 +371,31 @@ function AuthButton({ user, onSignOut }) {
       </button>
     );
   }
+
+  const handleSignIn = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
+    });
+  };
+
   return (
-    <a href="/login" style={{
-      display: "inline-flex", alignItems: "center", gap: 6,
-      background: "var(--orange)", color: "#fff",
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
-      fontSize: 13, fontWeight: 700, padding: "7px 16px",
-      borderRadius: 10, textDecoration: "none", transition: "opacity 0.2s",
-    }}
-    onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; }}
-    onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+    <button
+      onClick={handleSignIn}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 6,
+        background: "var(--orange)", color: "#fff",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: 13, fontWeight: 700, padding: "7px 16px",
+        borderRadius: 10, border: "none", cursor: "pointer",
+        transition: "opacity 0.2s",
+      }}
+      onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; }}
+      onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
     >
       <LogIn size={14} /> Sign in
-    </a>
+    </button>
   );
 }
 
@@ -471,7 +483,6 @@ export default function Home() {
     { value: "50+",    label: "Stores Supported"  },
   ];
 
-  // ── Social links ──────────────────────────────────────────
   const SOCIALS = [
     {
       href:    "https://www.instagram.com/i_am_pritesh_._/",
@@ -644,12 +655,11 @@ export default function Home() {
 
         .empty-wrap { max-width: 480px; margin: 0 auto; padding: 0 24px 100px; position: relative; z-index: 10; }
         .ecard { background: var(--surface); border: 2px dashed var(--border-o); border-radius: 28px; padding: 66px 40px; text-align: center; animation: fU 0.6s ease both; transition: background 0.4s, border-color 0.4s; }
-        .eicon { width: 74px; height: 74px; background: rgba(249,115,22,0.09); border: 1px solid var(--border-o); border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; }
+        .eicon { width: 74px; height: 74px; background: rgba(249,115,22,0.09); border: 1px solid var(--border-o); border-radius: 22px; display: flex; align-items: center; justifyContent: center; margin: 0 auto 22px; }
         .etitle { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 10px; transition: color 0.4s; }
         .esub { font-size: 0.9rem; color: var(--text-2); line-height: 1.68; margin-bottom: 22px; transition: color 0.4s; }
         .ecta { display: inline-flex; align-items: center; gap: 7px; color: var(--orange-d); font-size: 14px; font-weight: 700; }
 
-        /* ── Footer ── */
         .foot {
           position: relative; z-index: 10;
           border-top: 1px solid var(--border);
@@ -662,25 +672,12 @@ export default function Home() {
           justify-content: space-between;
           flex-wrap: wrap; gap: 14px;
         }
-        .foot-left {
-          display: flex; flex-direction: column; gap: 3px;
-        }
-        .foot-copy {
-          font-size: 13px; font-weight: 500;
-          color: var(--text-2); transition: color 0.4s;
-        }
-        .foot-by {
-          font-size: 11.5px; color: var(--text-3); transition: color 0.4s;
-        }
+        .foot-left { display: flex; flex-direction: column; gap: 3px; }
+        .foot-copy { font-size: 13px; font-weight: 500; color: var(--text-2); transition: color 0.4s; }
+        .foot-by { font-size: 11.5px; color: var(--text-3); transition: color 0.4s; }
         .foot-by strong { color: var(--orange-d); font-weight: 700; }
-        .foot-socials {
-          display: flex; align-items: center; gap: 8px;
-        }
-        .foot-sep {
-          width: 1px; height: 20px;
-          background: var(--border);
-          margin: 0 4px; flex-shrink: 0;
-        }
+        .foot-socials { display: flex; align-items: center; gap: 8px; }
+        .foot-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
 
         @keyframes sD { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
         @keyframes sU { from{opacity:0;transform:translateY(26px)}  to{opacity:1;transform:translateY(0)} }
@@ -809,27 +806,17 @@ export default function Home() {
         {/* ── Footer ── */}
         <footer className="foot">
           <div className="foot-inner">
-
-            {/* Left: copyright + byline */}
             <div className="foot-left">
               <span className="foot-copy">© {new Date().getFullYear()} DropNotify · All rights reserved</span>
               <span className="foot-by">⚡ Crafted by <strong>Pritesh Patil</strong></span>
             </div>
-
-            {/* Right: social icon buttons */}
             <div className="foot-socials">
-              {/* First 3: social platforms */}
               {SOCIALS.slice(0, 3).map(s => (
                 <SocialLink key={s.href} {...s} />
               ))}
-
-              {/* Divider before phone */}
               <div className="foot-sep" />
-
-              {/* Phone */}
               <SocialLink {...SOCIALS[3]} />
             </div>
-
           </div>
         </footer>
       </main>
