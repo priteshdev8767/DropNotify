@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata = {
-  title: "Price Tracker - Never Miss a Price Drop",
+  title: "Pritesh's DropNotify",
   description:
     "Track product prices across e-commerce sites and get alerts on price drops",
 };
