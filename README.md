@@ -91,8 +91,8 @@ Before starting, you'll need accounts/credentials for:
 ### Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/piyush-eon/smart-product-price-tracker.git
-cd smart-product-price-tracker
+git clone git remote add origin https://github.com/priteshdev8767/DropNotify.git
+cd DropNotify
 npm install
 ```
 
