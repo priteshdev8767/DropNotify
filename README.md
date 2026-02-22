@@ -1,4 +1,4 @@
-# 🛍️ DealDrop - Smart Product Price Tracker
+# 🛍️ Dropnotify - Smart Product Price Tracker
 
 > **Track products across any e-commerce site and get instant price drop alerts!**
 
@@ -7,11 +7,6 @@
 ![Firecrawl](https://img.shields.io/badge/Firecrawl-Web%20Scraping-blue)
 ![Brevo](https://img.shields.io/badge/Brevo-Email-red?logo=mailgun)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-
----
-
-## 📺 Demo Video
-**[Watch the full walkthrough here](https://youtu.be/HakXg-hFZ_c)**
 
 ---
 
