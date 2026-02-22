@@ -1,0 +1,4 @@
+npm install @supabase/supabase-js
+npm install @supabase/ssr
+
+curl.exe -X POST http://localhost:3000/api/cron/check-prices -H "Authorization: Bearer 589a9360efcb394de955bc011bc9a574f342eba7eef741b115319686db551080"
